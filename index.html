@@ -336,9 +336,11 @@
 
         for (let i = 0; i < cards.length; i++) {
             cards[i].classList.add("show");
-            // 进一步扩大分散范围，间距更大
-            cards[i].style.left = (Math.random() * 80 + 2) + "%";
-            cards[i].style.top = (Math.random() * 72 + 8) + "%";
+
+            // ✅ 每条卡片都独立分散，绝不粘连！
+            cards[i].style.left = (Math.random() * 65 + 5) + "%";
+            cards[i].style.top = (Math.random() * 60 + 15) + "%";
+
             await sleep(120);
         }
 
