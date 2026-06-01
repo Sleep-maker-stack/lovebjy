@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>❤️ 艳宝六一专属 ❤️</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #ffdde1, #ee9ca7);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .header {
+            position: fixed;
+            top: 20px;
+            font-size: 28px;
+            color: #ff477e;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .heart-icon {
+            color: #ff477e;
+            animation: heartbeat 1.2s infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .envelope-container {
+            position: relative;
+            width: 80%;
+            max-width: 500px;
+            height: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .envelope {
+            width: 100%;
+            height: 200px;
+            background: #ff9fb9;
+            border-radius: 0 0 12px 12px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            border: none;
+            overflow: visible;
+        }
+
+        .envelope::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 90px;
+            background: #ff8fab;
+            clip-path: polygon(0 0, 50% 100%, 100% 0);
+            z-index: 1;
+        }
+
+        .envelope-text {
+            font-size: 26px;
+            color: #fff;
+            font-weight: bold;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            text-shadow: none;
+        }
+
+        .envelope-subtext {
+            margin-top: 20px;
+            font-size: 20px;
+            color: #ff477e;
+            font-weight: bold;
+        }
+
+        .cards-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: linear-gradient(135deg, #2c1654, #4a235a);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .bg-hearts {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .bg-heart {
+            position: absolute;
+            color: #ff477e;
+            opacity: 0.6;
+            animation: float 8s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(10deg); }
+        }
+
+        .card {
+            position: absolute;
+            width: 110px;
+            height: 45px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 8px;
+            font-size: 12px;
+            font-weight: bold;
+            color: #333;
+            opacity: 0;
+            transform: scale(0);
+            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .card.show {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .card-header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 20px;
+            background: rgba(255,255,255,0.7);
+            border-radius: 12px 12px 0 0;
+            display: flex;
+            align-items: center;
+            padding-left: 8px;
+            font-size: 10px;
+            color: #666;
+        }
+
+        .card-header::before {
+            content: "";
+            width: 7px;
+            height: 7px;
+            background: #ff477e;
+            border-radius: 50%;
+            margin-right: 6px;
+        }
+
+        .card-text {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .popup {
+            position: fixed;
+            top: 47%; /* 向上+3 */
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            width: 75%;
+            max-width: 360px;
+            background: linear-gradient(160deg, #ff8fab, #ff5a8c);
+            border-radius: 20px;
+            padding: 22px 16px;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+            z-index: 100;
+            box-shadow: 0 15px 40px rgba(255,71,126,0.4);
+            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .popup.show {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .buttons {
+            position: fixed;
+            bottom: 30px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            padding: 0 20px;
+        }
+
+        .btn {
+            padding: 15px 50px;
+            border: none;
+            border-radius: 30px;
+            background: #ff5a8c;
+            color: white;
+            font-size: 22px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(255,90,140,0.3);
+            transition: 0.3s;
+        }
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(255,90,140,0.4);
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <span class="heart-icon">❤️</span> 艳宝六一专属 <span class="heart-icon">❤️</span>
+</div>
+
+<div class="envelope-container" id="envelopeContainer">
+    <div class="envelope" id="envelope">
+        <div class="envelope-text">点击信封，开启六一惊喜</div>
+    </div>
+    <div class="envelope-subtext">愿你童心未泯，所遇皆甜</div>
+</div>
+
+<div class="cards-container" id="cardsContainer">
+    <div class="bg-hearts" id="bgHearts"></div>
+</div>
+
+<div class="popup" id="popup1">愿我的小朋友永远都能被温柔以待 💖</div>
+<div class="popup" id="popup2">每天都开开心心 ✨</div>
+<div class="popup" id="popup3">平安喜乐，万事胜意 🎉</div>
+<div class="popup" id="popup4">儿童节快乐宝贝，在我这你永远是我的小朋友 🍭</div>
+
+<div class="buttons">
+    <button class="btn" onclick="location.reload()">返回</button>
+</div>
+
+<script>
+    const wishes = [
+        "温柔美好相随","愿所有忧愁都散尽","儿童节快乐🍭",
+        "你超优秀的","所愿皆成","好运常在","早点休憩",
+        "好好疼自己","稳住好状态","记得按时吃饭",
+        "童真藏心底","用心爱自己","记得每天开心",
+        "把握每瞬间","一路顺遂","要多多善待自己呀",
+        "记得喝甜饮","岁岁常欢愉","年年皆胜意",
+        "生活甜甜好运连连","保持热爱奔赴山海",
+        "无忧无虑自在如风","眼里有光心中有爱",
+        "日子温柔闪闪发光","快乐不止今天而已",
+        "童心永不打烊","快乐永远在线",
+        "三餐四季温暖有趣","平安无忧喜乐常伴",
+        "满心欢喜一路向阳","天真烂漫自在逍遥",
+        "往事清零爱恨随意","未来可期万事顺心",
+        "笑容常在烦恼远离","善良勇敢自带光芒",
+        "简单生活快乐加倍","清风拂面喜乐安然",
+        "童心灼灼岁岁无忧","温柔半两从容一生",
+        "愿你一生被爱包围","走到哪里都有暖阳",
+        "心怀善意所遇皆甜","步履从容不负韶华",
+        "烟火寻常岁岁安康","天真依旧美好如初",
+        "日日是好日年年是好年","平安喜乐得偿所愿",
+        "微风拂心喜乐随行","纯真不减快乐不停",
+        "生活明朗万物可爱","人间值得未来可期",
+        "童心相伴岁岁年年","欢喜常在无忧无虑"
+    ];
+
+    const colors = [
+        "#ffb3d9","#b3e5fc","#c8e6c9","#ffe0b2","#d1c4e9",
+        "#f8bbd0","#b2ebf2","#fff9c4","#f0f4c3","#ffccbc",
+        "#e1f5fe","#fce4ec","#f1f8e9","#fff3e0","#f3e5f5",
+        "#e8f5e9","#ffebee","#f5f5f5","#e0f7fa","#fef2f2"
+    ];
+
+    const cardsContainer = document.getElementById("cardsContainer");
+    const bgHearts = document.getElementById("bgHearts");
+    const popups = [
+        document.getElementById("popup1"),
+        document.getElementById("popup2"),
+        document.getElementById("popup3"),
+        document.getElementById("popup4")
+    ];
+
+    // 背景爱心全屏
+    function createBgHearts() {
+        for (let i = 0; i < 80; i++) {
+            const h = document.createElement("div");
+            h.className = "bg-heart";
+            h.innerHTML = "❤️";
+            h.style.left = Math.random() * 100 + "%";
+            h.style.top = Math.random() * 100 + "%";
+            h.style.fontSize = Math.random() * 18 + 8 + "px";
+            bgHearts.appendChild(h);
+        }
+    }
+
+    function createCards() {
+        const cards = [];
+        wishes.forEach((w, i) => {
+            const c = document.createElement("div");
+            c.className = "card";
+            c.innerHTML = `<div class="card-header">LOVE</div><div class="card-text">${w}</div>`;
+            c.style.background = colors[i % colors.length];
+            cardsContainer.appendChild(c);
+            cards.push(c);
+        });
+        return cards;
+    }
+
+    async function startAnimation() {
+        document.querySelector(".envelope-container").style.display = "none";
+        cardsContainer.style.display = "flex";
+
+        const cards = createCards();
+        createBgHearts();
+
+        for (let i = 0; i < cards.length; i++) {
+            cards[i].classList.add("show");
+            // 进一步扩大分散范围，间距更大
+            cards[i].style.left = (Math.random() * 80 + 2) + "%";
+            cards[i].style.top = (Math.random() * 72 + 8) + "%";
+            await sleep(120);
+        }
+
+        await sleep(2400);
+
+        const positions = getHeartPositions(cards.length);
+        cards.forEach((c, i) => {
+            c.style.left = positions[i].x + "%";
+            c.style.top = positions[i].y + "%";
+        });
+
+        await sleep(2400);
+
+        for (let p of popups) {
+            p.classList.add("show");
+            await sleep(1500);
+        }
+    }
+
+    function getHeartPositions(count) {
+        const arr = [];
+        const cx = 36;
+        const cy = 42; // 向上+3
+        const scaleX = 42;
+        const scaleY = 32;
+        for (let i = 0; i < count; i++) {
+            const t = (i / count) * Math.PI * 2;
+            const x = 16 * Math.pow(Math.sin(t), 3);
+            const y = -(13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t));
+            arr.push({
+                x: cx + (x / 20) * scaleX,
+                y: cy + (y / 20) * scaleY
+            });
+        }
+        return arr;
+    }
+
+    function sleep(ms) {
+        return new Promise(r => setTimeout(r, ms));
+    }
+
+    document.getElementById("envelopeContainer").addEventListener("click", startAnimation);
+</script>
+</body>
+</html>
